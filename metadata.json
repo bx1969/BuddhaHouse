@@ -1,0 +1,6 @@
+{
+  "name": "Buddha House",
+  "description": "A luxurious, interactive, and beautifully designed application for a modern wellness spa. Features include a tabbed service catalog, therapist matching, a custom massage session configurator, and a booking summary.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

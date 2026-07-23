@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --color-spa-bg: #fbfcfb;
+  --color-spa-cream: #f4f7f3;
+  --color-spa-sage-light: #d5ebd3;
+  --color-spa-sage: #143213;
+  --color-spa-sage-dark: #0e240e;
+  --color-spa-gold: #dfbd6d;
+  --color-spa-charcoal: #143213;
+  --color-spa-clay: #486247;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-spa-bg);
+    color: var(--color-spa-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom scrollbar for an elegant feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f7f3;
+}
+::-webkit-scrollbar-thumb {
+  background: #b5cfb3;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #143213;
+}
+
