@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Menu, X, ShoppingBag, Clock, Phone } from 'lucide-react';
 import { CONTACT_INFO } from '../data';
+import logoImg from '../assets/bh_face.jpg';
 
 interface NavbarProps {
   cartItemsCount: number;
@@ -103,10 +104,13 @@ export default function Navbar({
             >
               <div className="w-[60px] h-[60px] rounded-full border border-[#703275]/20 overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 duration-300 shadow-md shadow-black/30 bg-[#703275] p-1">
                 <img
-                  src="/bh_face.jpg"
+                  src={logoImg}
                   alt="Buddha House Logo"
                   className="w-full h-full object-contain"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/bh_face.jpg';
+                  }}
                 />
               </div>
               <div>

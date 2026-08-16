@@ -12,10 +12,10 @@ interface PackagesProps {
 }
 
 export default function Packages({ onAddPackageToCart }: PackagesProps) {
-  const [selectedDuration, setSelectedDuration] = useState<90 | 120>(90);
+  const [selectedDuration, setSelectedDuration] = useState<60 | 90 | 120>(60);
   const [addedFeedback, setAddedFeedback] = useState<Record<string, boolean>>({});
 
-  const baseRate = selectedDuration === 90 ? 180 : 240;
+  const baseRate = selectedDuration === 60 ? 135 : selectedDuration === 90 ? 180 : 240;
 
   const packagePlans = [
     {
@@ -106,10 +106,20 @@ export default function Packages({ onAddPackageToCart }: PackagesProps) {
           <span className="font-sans text-[11px] font-bold uppercase tracking-wider text-[#486247] mb-3">
             Select Session Base Duration
           </span>
-          <div className="inline-flex bg-[#143213]/5 p-1.5 rounded-2xl border border-[#143213]/5 shadow-inner">
+          <div className="inline-flex flex-wrap justify-center bg-[#143213]/5 p-1.5 rounded-2xl border border-[#143213]/5 shadow-inner gap-1">
+            <button
+              onClick={() => setSelectedDuration(60)}
+              className={`px-5 py-2.5 rounded-xl font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                selectedDuration === 60
+                  ? 'bg-[#143213] text-white shadow'
+                  : 'text-[#486247] hover:text-[#143213]'
+              }`}
+            >
+              60-Minute Rituals
+            </button>
             <button
               onClick={() => setSelectedDuration(90)}
-              className={`px-6 py-2.5 rounded-xl font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+              className={`px-5 py-2.5 rounded-xl font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 selectedDuration === 90
                   ? 'bg-[#143213] text-white shadow'
                   : 'text-[#486247] hover:text-[#143213]'
@@ -119,7 +129,7 @@ export default function Packages({ onAddPackageToCart }: PackagesProps) {
             </button>
             <button
               onClick={() => setSelectedDuration(120)}
-              className={`px-6 py-2.5 rounded-xl font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+              className={`px-5 py-2.5 rounded-xl font-sans text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                 selectedDuration === 120
                   ? 'bg-[#143213] text-white shadow'
                   : 'text-[#486247] hover:text-[#143213]'

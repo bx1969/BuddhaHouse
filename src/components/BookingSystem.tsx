@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingBag, X, Calendar, Clock, Trash2, CheckCircle, Tag, ShieldCheck, Printer, ArrowRight, CreditCard, Lock } from 'lucide-react';
+import { ShoppingBag, X, Calendar, Clock, Trash2, CheckCircle, ShieldCheck, Printer, ArrowRight, CreditCard, Lock } from 'lucide-react';
 import { CartItem, Therapist } from '../types';
 import { THERAPISTS } from '../data';
 import { 
@@ -32,12 +32,6 @@ export default function BookingSystem({
 }: BookingSystemProps) {
   // Navigation inside booking drawer
   const [step, setStep] = useState<1 | 2 | 3>(1); // 1: Review, 2: Info & Schedule, 3: Receipt
-
-  // Promo Code States
-  const [promoCode, setPromoCode] = useState('');
-  const [discountPercent, setDiscountPercent] = useState(0);
-  const [promoError, setPromoError] = useState('');
-  const [appliedPromo, setAppliedPromo] = useState('');
 
   // Schedulers
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -138,30 +132,8 @@ export default function BookingSystem({
 
   // Calculate pricing
   const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
-  const discountAmount = Math.round(subtotal * (discountPercent / 100));
   const serviceCharge = 0;
-  const grandTotal = subtotal - discountAmount;
-
-  // Apply promo action
-  const handleApplyPromo = () => {
-    setPromoError('');
-    if (promoCode.trim().toUpperCase() === 'WELCOME10') {
-      setDiscountPercent(10);
-      setAppliedPromo('WELCOME10');
-      setPromoCode('');
-    } else if (promoCode.trim().toUpperCase() === 'BUDDHA25') {
-      setDiscountPercent(25);
-      setAppliedPromo('BUDDHA25');
-      setPromoCode('');
-    } else {
-      setPromoError('Invalid coupon. Try WELCOME10 or BUDDHA25.');
-    }
-  };
-
-  const handleRemovePromo = () => {
-    setDiscountPercent(0);
-    setAppliedPromo('');
-  };
+  const grandTotal = subtotal;
 
   // Submit checkout booking form
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
@@ -245,8 +217,6 @@ export default function BookingSystem({
     setPhone('');
     setSpecialNotes('');
     setAgreeTerms(false);
-    setDiscountPercent(0);
-    setAppliedPromo('');
     setSchedulingError('');
     setScheduledSuccessfully(false);
   };
@@ -397,54 +367,6 @@ export default function BookingSystem({
                           </select>
                         </div>
 
-                        {/* Coupon codes box */}
-                        <div className="bg-white border border-spa-sage/10 rounded-2xl p-4 md:p-5 space-y-3">
-                          <h4 className="font-serif text-xs font-bold uppercase tracking-wider text-spa-charcoal flex items-center gap-1.5">
-                            <Tag className="w-4.5 h-4.5 text-spa-gold" />
-                            Promo Validation Codes
-                          </h4>
-                          
-                          {appliedPromo ? (
-                            <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-xl flex items-center justify-between text-xs font-sans">
-                              <span className="text-emerald-800 font-bold">
-                                Code "{appliedPromo}" Applied ({discountPercent}% Discount)
-                              </span>
-                              <button
-                                onClick={handleRemovePromo}
-                                className="text-[10px] text-emerald-600 font-bold uppercase hover:underline focus:outline-none cursor-pointer"
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="flex gap-2">
-                              <input
-                                type="text"
-                                value={promoCode}
-                                onChange={(e) => {
-                                  setPromoCode(e.target.value);
-                                  setPromoError('');
-                                }}
-                                placeholder="WELCOME10 or RENEW25"
-                                className="flex-1 bg-spa-cream border border-spa-sage/20 rounded-xl px-3 py-2 text-xs font-medium font-mono text-spa-charcoal uppercase focus:outline-none focus:border-spa-sage"
-                                id="promo-code-input"
-                              />
-                              <button
-                                onClick={handleApplyPromo}
-                                className="bg-spa-charcoal hover:bg-spa-clay text-white px-4 py-2 rounded-xl font-sans text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer focus:outline-none"
-                              >
-                                Apply
-                              </button>
-                            </div>
-                          )}
-                          {promoError && (
-                            <p className="font-sans text-[10px] text-red-500 font-medium">{promoError}</p>
-                          )}
-                          <p className="font-sans text-[10px] text-spa-clay/75 italic">
-                            💡 Try WELCOME10 for 10% off, or RENEW25 for 25% off entire reservation!
-                          </p>
-                        </div>
-
                         {/* Checkout Ledger Billing breakdown */}
                         <div className="bg-spa-cream border border-spa-sage/5 rounded-2xl p-5 space-y-3 font-sans text-xs text-spa-clay">
                           <h4 className="font-semibold text-spa-charcoal text-[11px] uppercase tracking-wider border-b border-spa-sage/10 pb-2">
@@ -454,12 +376,6 @@ export default function BookingSystem({
                             <span>Treatments Subtotal ({cartItems.length} items):</span>
                             <span className="font-semibold text-spa-charcoal font-mono">${subtotal}</span>
                           </div>
-                          {discountPercent > 0 && (
-                            <div className="flex justify-between text-emerald-700">
-                              <span>Promo discount ({discountPercent}%):</span>
-                              <span className="font-bold font-mono">-${discountAmount}</span>
-                            </div>
-                          )}
                           <div className="flex justify-between text-sm text-spa-charcoal font-bold border-t border-spa-sage/10 pt-2.5">
                             <span className="text-spa-sage-dark font-serif font-bold">Estimated Treatment Value:</span>
                             <span className="font-serif text-base text-spa-gold font-bold">${grandTotal}</span>
@@ -704,12 +620,6 @@ export default function BookingSystem({
                           <span>Treatments Service Rate:</span>
                           <span>${subtotal}</span>
                         </div>
-                        {discountPercent > 0 && (
-                          <div className="flex justify-between text-emerald-700">
-                            <span>Promo Discount:</span>
-                            <span>-${discountAmount}</span>
-                          </div>
-                        )}
                         <div className="flex justify-between border-t border-dashed border-spa-sage/10 pt-2 text-spa-charcoal">
                           <span>Estimated Treatment Value:</span>
                           <span className="font-bold font-mono">${grandTotal}</span>
